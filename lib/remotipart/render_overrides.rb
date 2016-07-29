@@ -16,6 +16,7 @@ module Remotipart
       render_without_remotipart *args
       if remotipart_submitted?
         textarea_body = response.content_type == 'text/html' ? html_escape(response.body) : response.body
+        textarea_body = "<textarea data-type=\"#{response.content_type}\" data-status=\"#{response.response_code}\" data-statusText=\"#{response.message}\">#{textarea_body}</textarea>}"        
         response.body = %{<script type=\"text/javascript\">try{window.parent.document;}catch(err){document.domain=document.domain;}</script>#{textarea_body}}
         response.content_type = ::Rails.version >= '5' ? Mime[:html] : Mime::HTML
       end
